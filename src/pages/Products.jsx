@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import API from "../services/api";
 import { useCart } from "../context/CartContext";
+import { useWishlist } from "../context/WishlistContext";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -11,6 +12,12 @@ export default function Products() {
   const [selectedCategory, setSelectedCategory] = useState("all");
 
   const { addToCart } = useCart();
+
+  const {
+  addToWishlist,
+  removeFromWishlist,
+  isInWishlist,
+} = useWishlist();
 
   const categoryTranslations = {
     smartphones: "Smartfonlar",
@@ -163,6 +170,7 @@ export default function Products() {
             }}
             transition={{ duration: 0.3 }}
             style={{
+              position: "relative",
               background: "#fff",
               borderRadius: "20px",
               padding: "18px",
@@ -204,6 +212,29 @@ export default function Products() {
                 -{Math.round(product.discountPercentage || 10)}%
               </span>
             </div>
+<button
+  onClick={() =>
+    isInWishlist(product.id)
+      ? removeFromWishlist(product.id)
+      : addToWishlist(product)
+  }
+  style={{
+    position: "absolute",
+    top: "65px",
+    right: "15px",
+    width: "45px",
+    height: "45px",
+    border: "none",
+    borderRadius: "50%",
+    background: "#fff",
+    cursor: "pointer",
+    fontSize: "22px",
+    zIndex: 10,
+    boxShadow: "0 4px 15px rgba(0,0,0,0.15)",
+  }}
+>
+  {isInWishlist(product.id) ? "❤️" : "🤍"}
+</button>
 
             <motion.img
               src={product.thumbnail}

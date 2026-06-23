@@ -10,7 +10,11 @@ import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import Success from "./pages/Success";
+import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
+import Profile from "./pages/Profile";
+import Admin from "./pages/Admin";
+import Wishlist from "./pages/Wishlist";
 
 function App() {
   return (
@@ -39,7 +43,20 @@ function App() {
           element={<Success />}
         />
 
-        <Route path="*" element={<NotFound />} />
+        <Route
+          path="/login"
+          element={<Login />}
+        />
+
+        <Route
+          path="/profile"
+          element={<Profile />}
+        />
+        <Route path="/admin" element={<Admin />} />
+        <Route
+  path="/wishlist"
+  element={<Wishlist />}
+/>
       </Routes>
 
       <ToastContainer

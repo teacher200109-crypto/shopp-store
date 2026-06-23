@@ -4,6 +4,19 @@ import API from "../services/api";
 
 export default function FeaturedProducts() {
   const [products, setProducts] = useState([]);
+  
+  // Ekran o'lchamini kuzatish uchun state
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 1200
+  );
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const isMobile = windowWidth < 768;
 
   useEffect(() => {
     const getProducts = async () => {
@@ -36,16 +49,17 @@ export default function FeaturedProducts() {
     <section
       style={{
         maxWidth: "1200px",
-        margin: "80px auto",
-        padding: "0 20px",
+        margin: isMobile ? "40px auto" : "80px auto", // Mobil uchun margin kamaytirildi
+        padding: isMobile ? "0 15px" : "0 20px",
       }}
     >
       <h2
         style={{
           textAlign: "center",
-          marginBottom: "40px",
-          fontSize: "36px",
+          marginBottom: isMobile ? "25px" : "40px",
+          fontSize: isMobile ? "26px" : "36px", // Sarlavha hajmi ekranga moslashdi
           fontWeight: "700",
+          lineHeight: "1.3",
         }}
       >
         Mashhur elektronika mahsulotlari
@@ -54,9 +68,11 @@ export default function FeaturedProducts() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(250px,1fr))",
-          gap: "25px",
+          // Kichik telefonlarda kartalar siqilib qolmasligi uchun minmax 240px qilindi
+          gridTemplateColumns: isMobile 
+            ? "repeat(auto-fit, minmax(240px, 1fr))" 
+            : "repeat(auto-fit, minmax(250px, 1fr))",
+          gap: isMobile ? "16px" : "25px",
         }}
       >
         {products.map((product) => (
@@ -65,43 +81,48 @@ export default function FeaturedProducts() {
             style={{
               background: "#fff",
               borderRadius: "16px",
-              padding: "15px",
+              padding: isMobile ? "12px" : "15px",
               boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
-              transition: "0.3s",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between", // Tugmalarni pastki qismda tekislash uchun
             }}
           >
-            <img
-              src={product.thumbnail}
-              alt={product.title}
-              style={{
-                width: "100%",
-                height: "220px",
-                objectFit: "cover",
-                borderRadius: "12px",
-              }}
-            />
+            <div>
+              <img
+                src={product.thumbnail}
+                alt={product.title}
+                style={{
+                  width: "100%",
+                  height: isMobile ? "180px" : "220px", // Telefonda rasm balandligi ixchamlashtirildi
+                  objectFit: "cover",
+                  borderRadius: "12px",
+                }}
+              />
 
-            <h3
-              style={{
-                margin: "15px 0",
-                minHeight: "50px",
-              }}
-            >
-              {product.title}
-            </h3>
+              <h3
+                style={{
+                  margin: "15px 0 10px 0",
+                  minHeight: isMobile ? "auto" : "50px", // Telefonda qatorlar orasidagi bo'shliq optimallashdi
+                  fontSize: isMobile ? "16px" : "18px",
+                }}
+              >
+                {product.title}
+              </h3>
 
-            <p
-              style={{
-                color: "#2563eb",
-                fontWeight: "700",
-                fontSize: "20px",
-                marginBottom: "15px",
-              }}
-            >
-              ${product.price}
-            </p>
+              <p
+                style={{
+                  color: "#2563eb",
+                  fontWeight: "700",
+                  fontSize: isMobile ? "18px" : "20px",
+                  marginBottom: "15px",
+                }}
+              >
+                ${product.price}
+              </p>
+            </div>
 
-            <Link to={`/products/${product.id}`}>
+            <Link to={`/products/${product.id}`} style={{ textDecoration: "none" }}>
               <button
                 style={{
                   width: "100%",
@@ -112,6 +133,7 @@ export default function FeaturedProducts() {
                   borderRadius: "10px",
                   cursor: "pointer",
                   fontWeight: "600",
+                  fontSize: isMobile ? "14px" : "15px",
                 }}
               >
                 Mahsulotni ko'rish
