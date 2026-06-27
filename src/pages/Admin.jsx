@@ -27,7 +27,7 @@ export default function Admin() {
     0
   );
 
-  // Kartalar uchun umumiy inline stil
+  
   const cardStyle = {
     background: "#fff",
     padding: isMobile ? "20px" : "25px",
@@ -122,7 +122,7 @@ export default function Admin() {
                 boxShadow: "0 8px 20px rgba(0,0,0,0.04)",
                 border: "1px solid #f1f5f9",
                 boxSizing: "border-box",
-                fontSize: isMobile ? "14px" : "15px",
+                fontSize: isMobile ? "14px" : "15px", 
               }}
             >
               <p style={{ margin: "4px 0", wordBreak: "break-all" }}>
